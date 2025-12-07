@@ -1,116 +1,119 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <title>Parajuriste Pénal Mali</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <title>Parajuriste Pénal Mali</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- Police Google -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
+  <!-- Police -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-<div class="app-shell">
+<div class="app-layout">
 
-    <!-- SIDEBAR GAUCHE -->
-    <aside class="sidebar">
-        <div class="sidebar-header">
-            <div class="brand">
-                <div class="brand-icon">⚖️</div>
-                <div class="brand-text">
-                    <div class="brand-title">Parajuriste</div>
-                    <div class="brand-subtitle">Pénal Mali</div>
-                </div>
-            </div>
-        </div>
+  <!-- SIDEBAR MINIMALE à gauche -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">⚖️</div>
+    <nav class="sidebar-nav">
+      <button class="sidebar-icon active" title="Accueil">🏠</button>
+      <button class="sidebar-icon" title="Historique">🕑</button>
+      <button class="sidebar-icon" title="Partager">🔗</button>
+      <button class="sidebar-icon" title="Aide">❓</button>
+    </nav>
+    <div class="sidebar-bottom">
+      <button class="sidebar-icon" title="Paramètres">⚙️</button>
+      <div class="sidebar-avatar">M</div>
+    </div>
+  </aside>
 
-        <button id="new-chat-btn" class="primary-btn">
-            ➕ Nouvelle discussion
+  <!-- ZONE PRINCIPALE -->
+  <main class="main">
+
+    <!-- HEADER -->
+    <header class="main-header">
+      <div class="model-pill">Parajuriste Pénal Mali</div>
+      <div class="header-actions">
+        <button class="header-btn">Rechercher</button>
+        <button class="header-btn primary">+ Nouvelle discussion</button>
+      </div>
+    </header>
+
+    <!-- SECTION ACCUEIL (gros titre + sphère) -->
+    <section class="hero">
+      <div class="hero-orb"></div>
+      <h1 class="hero-title">Bonjour, Client</h1>
+      <h2 class="hero-subtitle">
+        Sur quoi as-tu besoin <span class="accent">d’aide juridique aujourd’hui&nbsp;?</span>
+      </h2>
+    </section>
+
+    <!-- CARTE D’INPUT PRINCIPALE -->
+    <section class="input-card">
+      <div class="input-top-label">Décris ta situation juridique, Parajuriste analyse pour toi.</div>
+
+      <div class="input-row">
+        <textarea
+          id="prompt"
+          class="input-textarea"
+          rows="1"
+          placeholder="Écris ta question ou colle un texte à analyser…"></textarea>
+
+        <button id="send-btn" class="send-main-btn" aria-label="Envoyer">
+          ➤
         </button>
+      </div>
 
-        <div class="sidebar-section">
-            <div class="sidebar-section-title">Modes</div>
-            <div class="mode-buttons">
-                <button class="mode-btn active" data-mode="public">Grand public</button>
-                <button class="mode-btn" data-mode="ong">ONG / Protection</button>
-                <button class="mode-btn" data-mode="magistrat">Magistrat</button>
-            </div>
+      <div class="input-bottom-row">
+        <div class="input-actions">
+          <button class="chip-btn">📎 Joindre un document (bientôt)</button>
+          <button class="chip-btn">🧩 Styles d’écriture</button>
         </div>
-
-        <div class="sidebar-section">
-            <div class="sidebar-section-title">Historique</div>
-            <div id="history-list" class="history-list">
-                <!-- rempli par script.js -->
-            </div>
+        <div class="input-hint">
+          Entrée pour envoyer • Shift + Entrée pour aller à la ligne
         </div>
+      </div>
+    </section>
 
-        <div class="sidebar-footer">
-            <button id="theme-toggle" class="icon-btn" title="Basculer le thème">
-                🌙
-            </button>
+    <!-- SUGGESTIONS RAPIDES -->
+    <section class="suggestions">
+      <h3 class="suggestions-title">Commencer avec un exemple</h3>
+      <div class="suggestions-grid">
+        <button class="suggestion-card">
+          Rédiger une plainte simple<br><span>Violence, vol, escroquerie…</span>
+        </button>
+        <button class="suggestion-card">
+          Comprendre une garde à vue<br><span>Durée, droits, recours</span>
+        </button>
+        <button class="suggestion-card">
+          Vérifier une infraction<br><span>Peines prévues par le Code pénal</span>
+        </button>
+        <button class="suggestion-card">
+          Orienter une victime<br><span>ONG et structures d’aide au Mali</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ZONE DE DISCUSSION (CHAT) -->
+    <section class="chat-wrapper">
+      <div class="chat-header">
+        <div class="chat-title">Discussion en cours</div>
+        <div id="thinking-container" class="thinking hidden">
+          <span class="thinking-dot"></span>
+          <span>Parajuriste réfléchit…</span>
         </div>
-    </aside>
+      </div>
 
-    <!-- ZONE CENTRALE -->
-    <main class="main-area">
+      <div id="messages" class="chat-messages">
+        <!-- rempli par script.js -->
+      </div>
+    </section>
 
-        <!-- TOP BAR -->
-        <header class="top-bar">
-            <div class="top-bar-left">
-                <div class="top-bar-title">ASSISTANT PENAL MALI</div>
-                <div class="top-bar-subtitle">
-                    Réponses fondées sur le Code pénal, le Code de procédure pénale et la Constitution du Mali.
-                </div>
-            </div>
-            <div class="top-bar-right">
-                <div class="status-dot"></div>
-                <span class="status-text">En ligne</span>
-            </div>
-        </header>
-
-        <!-- ZONE MESSAGES -->
-        <section class="chat-area">
-            <div id="messages" class="messages">
-                <!-- messages ajoutés par script.js -->
-            </div>
-
-            <!-- Parajuriste réfléchit -->
-            <div id="thinking-container" class="thinking hidden">
-                <div class="thinking-icon">⚖️</div>
-                <div class="thinking-text">
-                    Parajuriste réfléchit
-                    <span class="dot-anim">
-                        <span>.</span><span>.</span><span>.</span>
-                    </span>
-                </div>
-            </div>
-        </section>
-
-        <!-- ZONE INPUT -->
-        <footer class="input-bar">
-            <div class="input-inner">
-                <textarea
-                    id="prompt"
-                    class="prompt-input"
-                    rows="1"
-                    placeholder="Pose ta question à l'Assistant Juridique Pénal Mali…"></textarea>
-
-                <button id="send-btn" class="send-btn" aria-label="Envoyer">
-                    ➤
-                </button>
-            </div>
-            <div class="input-hint">
-                Appuie sur <span>Entrée</span> pour envoyer • <span>Shift + Entrée</span> pour aller à la ligne
-            </div>
-        </footer>
-
-    </main>
+  </main>
 </div>
 
 <script src="script.js"></script>
