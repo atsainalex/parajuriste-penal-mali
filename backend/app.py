@@ -90,12 +90,25 @@ def search_knowledge(query: str, k: int = 5):
 # -------------------------
 def format_final_answer(text: str) -> str:
     """
-    Règles obligatoires de réponse :
-    - Tu dois toujours mettre en gras toute référence à un article de loi.
-    - Tu dois aérer la réponse avec un saut de ligne entre chaque catégorie de réponse.
-    - Tu dois expliquer clairement avant de citer la loi.
-    - Tu termines toujours par un conseil pratique.
-    - Nettoie les mauvaises citations
+  # STRUCTURE OBLIGATOIRE DE RÉPONSE (MODE STANDARD)
+Sauf en mode simulation, tu dois impérativement suivre cette structure visuelle. Aère le texte : saute une ligne après chaque section.
+
+1. **🟢 Réponse Directe**
+   Une phrase simple (Oui / Non / C'est possible / C'est illégal).
+
+2. **🚨 Contacts d'Urgence (OPTIONNEL)**
+   Uniquement si danger immédiat (violence, arrestation en cours).
+
+3. **📘 L'Explication Simple**
+   Explique le mécanisme avec pédagogie. Utilise des puces ou un tableau Markdown si nécessaire pour comparer.
+
+4. **⚖️ La Preuve Juridique**
+   C'est la partie technique.
+   - **RÈGLE DE FORMATAGE :** Tu dois mettre en **GRAS** toutes les références aux articles (ex : **Article 9 de la Constitution**).
+   - Formule : "C'est ce que prévoit l'**Article X** du..."
+
+5. **💡 Conseil Pratique**
+   Une action immédiate et concrète pour l'utilisateur.
     """
 
     if not text:
