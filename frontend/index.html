@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Parajuriste Pénal Mali</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app-shell">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo-circle">⚖️</div>
+            <div class="sidebar-title">
+                <h1>Parajuriste<br><span>Pénal Mali</span></h1>
+            </div>
+        </div>
+
+        <div class="sidebar-section">
+            <h2>Mode</h2>
+            <div class="mode-buttons">
+                <button class="mode-btn active" data-mode="public">Grand public</button>
+                <button class="mode-btn" data-mode="ong">ONG</button>
+                <button class="mode-btn" data-mode="magistrat">Magistrat</button>
+            </div>
+        </div>
+
+        <div class="sidebar-section">
+            <h2>Conversations</h2>
+            <div id="history-list" class="history-list">
+                <!-- Historique affiché ici -->
+            </div>
+            <button id="new-chat-btn" class="new-chat-btn">+ Nouvelle discussion</button>
+        </div>
+
+        <div class="sidebar-footer">
+            <div class="status-dot"></div>
+            <span>Backend local connecté</span>
+        </div>
+    </aside>
+
+    <!-- MAIN CHAT AREA -->
+    <main class="chat-area">
+        <!-- TOP BAR -->
+        <header class="top-bar">
+            <div class="window-buttons">
+                <span class="btn red"></span>
+                <span class="btn yellow"></span>
+                <span class="btn green"></span>
+            </div>
+            <div class="top-title">Assistant juridique – Droit pénal malien</div>
+            <div class="top-actions">
+                <button id="theme-toggle" title="Basculer le thème">🌗</button>
+            </div>
+        </header>
+
+        <!-- MESSAGE CONTAINER -->
+        <section id="messages" class="messages">
+            <!-- Messages insérés ici -->
+        </section>
+
+        <!-- TYPING / LOADER ULTRA PREMIUM -->
+        <div id="thinking-container" class="thinking-container hidden">
+            <div class="thinking-avatar">⚖️</div>
+            <div class="thinking-text-block">
+                <div class="thinking-title">Parajuriste réfléchit…</div>
+                <div class="thinking-dots">
+                    <span class="dot dot1"></span>
+                    <span class="dot dot2"></span>
+                    <span class="dot dot3"></span>
+                </div>
+                <div class="thinking-sub">Analyse des textes et de la base de connaissance</div>
+                <div class="progress-bar">
+                    <div class="progress-inner"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- INPUT AREA -->
+        <footer class="input-bar">
+            <div class="input-wrapper">
+                <textarea id="prompt" placeholder="Écris ta question juridique ici…" rows="1"></textarea>
+                <button id="send-btn" class="send-btn">➤</button>
+            </div>
+            <div class="input-hints">
+                Parajuriste ne remplace pas un avocat. Pour les démarches devant le tribunal, fais-toi accompagner.
+            </div>
+        </footer>
+    </main>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
