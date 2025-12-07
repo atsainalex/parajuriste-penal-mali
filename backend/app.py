@@ -177,6 +177,7 @@ Si un article ou une règle ne figure PAS dans les extraits FAISS, tu écris :
 ---
 
 🎯 **FORMAT OBLIGATOIRE DE LA RÉPONSE :**
+ne revient pas à la ligne après chaque point, supprime les ** et met les articles et sources que tu cites en gras
 
 1. 🟢 Réponse directe  
 2. 📘 Explication simple  
