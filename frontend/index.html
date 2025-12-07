@@ -3,90 +3,113 @@
 <head>
     <meta charset="UTF-8">
     <title>Parajuriste Pénal Mali</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Police Google -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="app-shell">
-    <!-- SIDEBAR -->
+
+    <!-- SIDEBAR GAUCHE -->
     <aside class="sidebar">
         <div class="sidebar-header">
-            <div class="logo-circle">⚖️</div>
-            <div class="sidebar-title">
-                <h1>Parajuriste<br><span>Pénal Mali</span></h1>
+            <div class="brand">
+                <div class="brand-icon">⚖️</div>
+                <div class="brand-text">
+                    <div class="brand-title">Parajuriste</div>
+                    <div class="brand-subtitle">Pénal Mali</div>
+                </div>
             </div>
         </div>
 
+        <button id="new-chat-btn" class="primary-btn">
+            ➕ Nouvelle discussion
+        </button>
+
         <div class="sidebar-section">
-            <h2>Mode</h2>
+            <div class="sidebar-section-title">Modes</div>
             <div class="mode-buttons">
                 <button class="mode-btn active" data-mode="public">Grand public</button>
-                <button class="mode-btn" data-mode="ong">ONG</button>
+                <button class="mode-btn" data-mode="ong">ONG / Protection</button>
                 <button class="mode-btn" data-mode="magistrat">Magistrat</button>
             </div>
         </div>
 
         <div class="sidebar-section">
-            <h2>Conversations</h2>
+            <div class="sidebar-section-title">Historique</div>
             <div id="history-list" class="history-list">
-                <!-- Historique affiché ici -->
+                <!-- rempli par script.js -->
             </div>
-            <button id="new-chat-btn" class="new-chat-btn">+ Nouvelle discussion</button>
         </div>
 
         <div class="sidebar-footer">
-            <div class="status-dot"></div>
-            <span>Connecté</span>
+            <button id="theme-toggle" class="icon-btn" title="Basculer le thème">
+                🌙
+            </button>
         </div>
     </aside>
 
-    <!-- MAIN CHAT AREA -->
-    <main class="chat-area">
+    <!-- ZONE CENTRALE -->
+    <main class="main-area">
+
         <!-- TOP BAR -->
         <header class="top-bar">
-            <div class="window-buttons">
-                <span class="btn red"></span>
-                <span class="btn yellow"></span>
-                <span class="btn green"></span>
+            <div class="top-bar-left">
+                <div class="top-bar-title">Assistant en droit pénal malien</div>
+                <div class="top-bar-subtitle">
+                    Réponses fondées sur le Code pénal, le Code de procédure pénale et la Constitution du Mali.
+                </div>
             </div>
-            <div class="top-title">Assistant Pénal Mali</div>
-            <div class="top-actions">
-                <button id="theme-toggle" title="Basculer le thème">🌗</button>
+            <div class="top-bar-right">
+                <div class="status-dot"></div>
+                <span class="status-text">En ligne</span>
             </div>
         </header>
 
-        <!-- MESSAGE CONTAINER -->
-        <section id="messages" class="messages">
-            <!-- Messages insérés ici -->
+        <!-- ZONE MESSAGES -->
+        <section class="chat-area">
+            <div id="messages" class="messages">
+                <!-- messages ajoutés par script.js -->
+            </div>
+
+            <!-- Parajuriste réfléchit -->
+            <div id="thinking-container" class="thinking hidden">
+                <div class="thinking-icon">⚖️</div>
+                <div class="thinking-text">
+                    Parajuriste réfléchit
+                    <span class="dot-anim">
+                        <span>.</span><span>.</span><span>.</span>
+                    </span>
+                </div>
+            </div>
         </section>
 
-        <!-- TYPING / LOADER ULTRA PREMIUM -->
-        <div id="thinking-container" class="thinking-container hidden">
-            <div class="thinking-avatar">⚖️</div>
-            <div class="thinking-text-block">
-                <div class="thinking-title">Parajuriste réfléchit…</div>
-                <div class="thinking-dots">
-                    <span class="dot dot1"></span>
-                    <span class="dot dot2"></span>
-                    <span class="dot dot3"></span>
-                </div>
-                <div class="thinking-sub">Analyse des textes et de la base de connaissance</div>
-                <div class="progress-bar">
-                    <div class="progress-inner"></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- INPUT AREA -->
+        <!-- ZONE INPUT -->
         <footer class="input-bar">
-            <div class="input-wrapper">
-                <textarea id="prompt" placeholder="Pose ta question à l'Assistant Pénal Mali…" rows="1"></textarea>
-                <button id="send-btn" class="send-btn">➤</button>
+            <div class="input-inner">
+                <textarea
+                    id="prompt"
+                    class="prompt-input"
+                    rows="1"
+                    placeholder="Décris ta situation juridique, Parajuriste analyse pour toi…"></textarea>
+
+                <button id="send-btn" class="send-btn" aria-label="Envoyer">
+                    ➤
+                </button>
             </div>
-            <div class="input-hints">
-                Parajuriste ne remplace pas un avocat. Pour les démarches devant le tribunal, fais-toi accompagner.
+            <div class="input-hint">
+                Appuie sur <span>Entrée</span> pour envoyer • <span>Shift + Entrée</span> pour aller à la ligne
             </div>
         </footer>
+
     </main>
 </div>
 
