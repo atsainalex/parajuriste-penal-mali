@@ -90,8 +90,11 @@ def search_knowledge(query: str, k: int = 5):
 # -------------------------
 def format_final_answer(text: str) -> str:
     """
-    - Ajoute un saut de ligne propre
-    - Espacement de 5px entre chaque phrase
+    Règles obligatoires de réponse :
+    - Tu dois toujours mettre en **gras** toute référence à un article de loi.
+    - Tu dois aérer la réponse avec un saut de ligne entre chaque point important.
+    - Tu dois expliquer clairement avant de citer la loi.
+    - Tu termines toujours par un conseil pratique.
     - Nettoie les mauvaises citations
     """
 
@@ -156,6 +159,12 @@ Cite aussi les sources des articles provenant des documents :
 Précise de quels documents proviennent les articles que tu cites.
 
 Met en gras tous les articles que tu cites
+
+Règles obligatoires de réponse :
+- Tu dois toujours mettre en **gras** toute référence à un article de loi.
+- Tu dois aérer la réponse avec un saut de ligne entre chaque point important.
+- Tu dois expliquer simplement avant de citer la loi.
+- Tu termines toujours par un conseil pratique.
 
 Si un article ou une règle ne figure PAS dans les extraits FAISS, tu écris :
 "Je ne trouve pas cet article dans la base de connaissances fournie."
