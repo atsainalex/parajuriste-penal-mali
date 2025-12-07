@@ -1,183 +1,218 @@
-// Configuration de l'URL du backend
-// En production, remplacez par votre URL Render (ex: https://parajuriste-backend.onrender.com/chat)
-const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-    ? "http://127.0.0.1:8000/chat"
-    : "https://parajuriste-backend.onrender.com/chat"; // À REMPLACER après déploiement
+const API_URL = "https://parajuriste-penal-mali-backend…/chat"; // garde ton URL actuelle
 
 let currentMode = "public";
 let conversationId = 1;
 let history = [];
 
-// ELEMENTS
+// ÉLÉMENTS
 const messagesEl = document.getElementById("messages");
 const promptEl = document.getElementById("prompt");
 const sendBtn = document.getElementById("send-btn");
 const thinkingContainer = document.getElementById("thinking-container");
-const historyListEl = document.getElementById("history-list");
-const newChatBtn = document.getElementById("new-chat-btn");
-const modeButtons = document.querySelectorAll(".mode-btn");
-const themeToggle = document.getElementById("theme-toggle");
+
+// (l’historique complet n’est pas encore visible dans cette UI, mais on garde la logique)
+let historyListEl = document.getElementById("history-list");
+let newChatBtn = document.getElementById("new-chat-btn");
+let modeButtons = document.querySelectorAll(".mode-btn");
+let themeToggle = document.getElementById("theme-toggle");
+
+// Certains éléments peuvent être absents dans ce design : on sécurise
+if (!historyListEl) {
+  historyListEl = { innerHTML: "" };
+}
+if (!newChatBtn) {
+  newChatBtn = { addEventListener: () => {} };
+}
+if (!modeButtons || modeButtons.length === 0) {
+  modeButtons = [];
+}
+if (!themeToggle) {
+  themeToggle = { addEventListener: () => {} };
+}
 
 // AUTO-RESIZE TEXTAREA
 promptEl.addEventListener("input", () => {
-    promptEl.style.height = "auto";
-    promptEl.style.height = promptEl.scrollHeight + "px";
+  promptEl.style.height = "auto";
+  promptEl.style.height = promptEl.scrollHeight + "px";
 });
 
-// SEND ON ENTER (sans SHIFT)
+// ENVOI SUR ENTER (sans Shift)
 promptEl.addEventListener("keydown", (e) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-        e.preventDefault();
-        sendMessage();
-    }
+  if (e.key === "Enter" && !e.shiftKey) {
+    e.preventDefault();
+    sendMessage();
+  }
 });
 
 sendBtn.addEventListener("click", sendMessage);
 
-// MODE SELECTION
+// SÉLECTION MODE (si boutons présents)
 modeButtons.forEach(btn => {
-    btn.addEventListener("click", () => {
-        modeButtons.forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
-        currentMode = btn.dataset.mode || "public";
-        addSystemMessage(`Mode changé : ${labelForMode(currentMode)}.`);
-    });
+  btn.addEventListener("click", () => {
+    modeButtons.forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    currentMode = btn.dataset.mode || "public";
+    addSystemMessage(`Mode changé : ${labelForMode(currentMode)}.`);
+  });
 });
 
-// NOUVELLE DISCUSSION
+// NOUVELLE DISCUSSION (si bouton présent)
 newChatBtn.addEventListener("click", () => {
-    conversationId += 1;
-    history.push({ id: conversationId, title: `Discussion ${conversationId}` });
-    renderHistory();
-    messagesEl.innerHTML = "";
-    addSystemMessage("Nouvelle discussion créée.");
+  conversationId += 1;
+  history.push({ id: conversationId, title: `Discussion ${conversationId}` });
+  renderHistory();
+  messagesEl.innerHTML = "";
+  addSystemMessage("Nouvelle discussion créée.");
 });
 
-// THEME TOGGLE (simple)
+// THEME (si toggle présent)
 themeToggle.addEventListener("click", () => {
-    document.body.classList.toggle("light");
+  document.body.classList.toggle("light");
 });
 
 // LABEL MODE
 function labelForMode(mode) {
-    switch (mode) {
-        case "ong":
-            return "ONG / Protection";
-        case "magistrat":
-            return "Magistrat";
-        default:
-            return "Grand public";
-    }
+  switch (mode) {
+    case "ong": return "ONG / Protection";
+    case "magistrat": return "Magistrat";
+    default: return "Grand public";
+  }
 }
 
-// THINKING ANIMATION
+// ANIMATION "PENSE"
 function showThinking() {
-    thinkingContainer.classList.remove("hidden");
+  if (thinkingContainer) thinkingContainer.classList.remove("hidden");
 }
-
 function hideThinking() {
-    thinkingContainer.classList.add("hidden");
+  if (thinkingContainer) thinkingContainer.classList.add("hidden");
 }
 
-// MESSAGE RENDERING
+/* -------- FORMATAGE DES TEXTES -------- */
+
+/**
+ * Met en gras les références d’articles de loi
+ * Exemple : Article 45 du Code pénal
+ */
+function boldLawArticles(text) {
+  return text.replace(
+    /(Article\s+\d+[A-Za-z0-9\/\-]*\s+du\s+Code[^.\n]*)/gi,
+    "<strong>$1</strong>"
+  );
+}
+
+/**
+ * Aère le texte : remplace les sauts de ligne par <br><br>
+ */
+function addSpacing(text) {
+  return text.replace(/\n+/g, "<br><br>");
+}
+
+/**
+ * Formatage complet d’une réponse IA
+ */
+function formatAssistantText(raw) {
+  let t = raw;
+  t = boldLawArticles(t);
+  t = addSpacing(t);
+  return t;
+}
+
+/* -------- AFFICHAGE DES MESSAGES -------- */
+
 function addMessage(role, text) {
-    const row = document.createElement("div");
-    row.className = "message-row " + role;
+  const row = document.createElement("div");
+  row.className = "message-row " + role;
 
-    if (role === "assistant") {
-        const avatar = document.createElement("div");
-        avatar.className = "message-avatar";
-        avatar.textContent = "⚖️";
-        row.appendChild(avatar);
-    }
+  const bubble = document.createElement("div");
+  bubble.className = "message-bubble";
 
-    const bubble = document.createElement("div");
-    bubble.className = "bubble";
+  if (role === "assistant") {
+    bubble.innerHTML = formatAssistantText(text);
+  } else {
+    // utilisateur : on garde les retours à la ligne simples
+    bubble.innerHTML = text.replace(/\n/g, "<br>");
+  }
 
-    // On garde les sauts de ligne envoyés par le backend
-    bubble.innerHTML = text
-        .replace(/\n/g, "<br>");
-
-    row.appendChild(bubble);
-    messagesEl.appendChild(row);
-
-    messagesEl.scrollTop = messagesEl.scrollHeight;
+  row.appendChild(bubble);
+  messagesEl.appendChild(row);
+  messagesEl.scrollTop = messagesEl.scrollHeight;
 }
 
 function addSystemMessage(text) {
-    const row = document.createElement("div");
-    row.className = "message-row assistant";
+  const row = document.createElement("div");
+  row.className = "message-row assistant";
 
-    const avatar = document.createElement("div");
-    avatar.className = "message-avatar";
-    avatar.textContent = "⚙️";
-    row.appendChild(avatar);
+  const bubble = document.createElement("div");
+  bubble.className = "message-bubble";
+  bubble.style.background = "#e5e7eb";
+  bubble.style.fontSize = "12px";
+  bubble.style.color = "#4b5563";
+  bubble.innerHTML = text.replace(/\n/g, "<br>");
 
-    const bubble = document.createElement("div");
-    bubble.className = "bubble";
-    bubble.style.opacity = "0.8";
-    bubble.style.fontSize = "12px";
-    bubble.innerHTML = text.replace(/\n/g, "<br>");
-
-    row.appendChild(bubble);
-    messagesEl.appendChild(row);
-    messagesEl.scrollTop = messagesEl.scrollHeight;
+  row.appendChild(bubble);
+  messagesEl.appendChild(row);
+  messagesEl.scrollTop = messagesEl.scrollHeight;
 }
 
-// HISTORY RENDER
+/* -------- HISTORIQUE (LOGIQUE SIMPLE) -------- */
+
 function renderHistory() {
-    historyListEl.innerHTML = "";
-    history.forEach(item => {
-        const div = document.createElement("div");
-        div.className = "history-item";
-        div.textContent = item.title;
-        historyListEl.appendChild(div);
-    });
+  if (!historyListEl || !historyListEl.innerHTML) return;
+  historyListEl.innerHTML = "";
+  history.forEach(item => {
+    const div = document.createElement("div");
+    div.className = "history-item";
+    div.textContent = item.title;
+    historyListEl.appendChild(div);
+  });
 }
 
 // INITIAL
 history.push({ id: conversationId, title: "Discussion 1" });
 renderHistory();
-addSystemMessage("Bienvenue sur Parajuriste Pénal Mali. Pose ta première question.");
+addSystemMessage(
+  "Bienvenue sur Parajuriste Pénal Mali. Pose ta première question en droit pénal ou de procédure pénale."
+);
 
-// MAIN SEND FUNCTION
+/* -------- ENVOI AU BACKEND -------- */
+
 async function sendMessage() {
-    const text = promptEl.value.trim();
-    if (!text) return;
+  const text = promptEl.value.trim();
+  if (!text) return;
 
-    addMessage("user", text);
-    promptEl.value = "";
-    promptEl.style.height = "auto";
+  addMessage("user", text);
+  promptEl.value = "";
+  promptEl.style.height = "auto";
 
-    showThinking();
+  showThinking();
 
-    try {
-        const response = await fetch(API_URL, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                prompt: text,
-                mode: currentMode
-            })
-        });
+  try {
+    const response = await fetch(API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        prompt: text,
+        mode: currentMode
+      })
+    });
 
-        if (!response.ok) {
-            hideThinking();
-            addSystemMessage("Erreur de connexion au serveur backend.");
-            return;
-        }
-
-        const data = await response.json();
-        hideThinking();
-
-        if (data.reply) {
-            addMessage("assistant", data.reply);
-        } else {
-            addSystemMessage("Réponse vide reçue du backend.");
-        }
-
-    } catch (err) {
-        hideThinking();
-        addSystemMessage("Erreur réseau : " + err.message);
+    if (!response.ok) {
+      hideThinking();
+      addSystemMessage("Erreur de connexion au serveur backend.");
+      return;
     }
+
+    const data = await response.json();
+    hideThinking();
+
+    if (data.reply) {
+      addMessage("assistant", data.reply);
+    } else {
+      addSystemMessage("Réponse vide reçue du backend.");
+    }
+
+  } catch (err) {
+    hideThinking();
+    addSystemMessage("Erreur réseau : " + err.message);
+  }
 }
