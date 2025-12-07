@@ -2,7 +2,7 @@
 // En production, remplacez par votre URL Render (ex: https://parajuriste-backend.onrender.com/chat)
 const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
     ? "http://127.0.0.1:8000/chat"
-    : "https://YOUR_RENDER_URL.onrender.com/chat"; // À REMPLACER après déploiement
+    : "https://parajuriste-backend.onrender.com/chat"; // À REMPLACER après déploiement
 
 let currentMode = "public";
 let conversationId = 1;
